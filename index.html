@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Collection</title>
+</head>
+<body>
+
+<script>
+    // Function to detect the operating system
+    function detectOS() {
+        return window.navigator.platform;
+    }
+
+    // Function to get the user's timezone
+    function getTimezone() {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    }
+
+    // Function to get the screen size
+    function getScreenSize() {
+        return {
+            width: window.screen.width,
+            height: window.screen.height
+        };
+    }
+
+    // Collect data
+    const data = {
+        browser: navigator.userAgent,
+        os: detectOS(),
+        timezone: getTimezone(),
+        screenSize: getScreenSize(),
+        ip: "127.0.0.1"  // Placeholder, consider using an API or other method to get the real IP
+    };
+
+    // Send data to the Flask server
+    fetch('https://robod00d.pythonanywhere.com/send_to_discord', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+    })
+    .catch(error => {
+        console.error('Error sending data:', error);
+    });
+
+</script>
+
+</body>
+</html>
